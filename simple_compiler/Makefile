@@ -1,7 +1,7 @@
 CXX := g++
 CXXFLAGS := -Wall -std=c++11 -Wpedantic -Wextra -Werror -g
 LDFLAGS :=
-OPENGL_LDFLAGS := -lglut -lGLU -lGL
+#OPENGL_LDFLAGS := -lglut -lGLU -lGL
 
 UNAME := $(shell uname)
 
@@ -30,8 +30,11 @@ symbol_test.o: symbol_test.cpp
 Symbol.o: Symbol.cpp Symbol.h
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
+#simple_compiler: main.o Token.o StateMachine.o Scanner.o Symbol.o Parser.o Node.o
+#	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(OPENGL_LDFLAGS)
+
 simple_compiler: main.o Token.o StateMachine.o Scanner.o Symbol.o Parser.o Node.o
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(OPENGL_LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 main.o: Main.cpp Token.h
 	$(CXX) $(CXXFLAGS) -o $@ -c $<

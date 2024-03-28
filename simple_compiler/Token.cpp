@@ -15,26 +15,26 @@ TokenClass::TokenClass(TokenType type, const std::string& lexeme)
     } else if (lexeme == "while") {
         mType = TokenType::WHILE_TOKEN;
     }
-};
+} 
 
 TokenType TokenClass::GetTokenType() const { 
     return mType; 
-};
+} 
 
 const std::string& TokenClass::GetTokenTypeName() const {
     return gTokenTypeNames[mType];
-};
+} 
 
 std::string TokenClass::GetLexeme() const { 
     return mLexeme; 
-}
+} 
 
 const std::string& TokenClass::GetTokenTypeName(TokenType type) { 
     return gTokenTypeNames[type]; 
-};
+} 
 
 std::ostream &operator<<(std::ostream &out, const TokenClass &tc) {
     out << "Type: " << tc.GetTokenType() << ", Name: " << tc.GetTokenTypeName() << ", Lexeme: " << tc.GetLexeme();
     return out;
-}
+} 
 

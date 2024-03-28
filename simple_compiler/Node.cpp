@@ -138,7 +138,7 @@ IfStatementNode::~IfStatementNode() {
     MSG("Destructing If Statement Node");
     delete mExpressionNode;
     delete mStatementNode;
-};
+}
 
 void IfStatementNode::Interpret() {
     if (mExpressionNode->Evaluate() != 0) {
@@ -165,7 +165,7 @@ void WhileStatementNode::Interpret() {
 
 ExpressionNode::ExpressionNode() {
     MSG("Constructing Expression Node");
-};
+}
 
 ExpressionNode::~ExpressionNode() {
     MSG("Destructing Expression Node");
@@ -272,11 +272,11 @@ int OrNode::Evaluate() const {
 AndNode::AndNode(ExpressionNode* left, ExpressionNode* right) 
 : BinaryOperatorNode(left, right) {
     MSG("Constructing AND Node");
-};
+}
 
 int AndNode::Evaluate() const {
     return mLeftExpressionNode->Evaluate() && mRightExpressionNode->Evaluate() ? 1 : 0;
-};
+}
 
 LessNode::LessNode(ExpressionNode* left, ExpressionNode* right)
 : BinaryOperatorNode(left, right) {

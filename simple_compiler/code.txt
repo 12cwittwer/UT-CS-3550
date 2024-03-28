@@ -1,0 +1,28 @@
+void main()
+{
+	int sum;
+
+	//find the sum of 35 and 400
+	
+	sum = 35 + 400;
+	int quotient;
+	/* Should be 435
+	is wrong otherwise */
+	quotient = 10 / 2;
+	cout << sum;
+	int difference;
+	difference = 10 * (100 - 10);
+	int less;
+	less = 10 == 10;
+	less = less + sum;
+	cout << less;
+	if (difference > less && difference < less) {
+		cout << difference;
+	}
+	int num;
+	num = 1;
+	while (num < 4 && num < 10) {
+		cout << num;
+		num = num + 1;
+	}
+}

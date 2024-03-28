@@ -1,0 +1,41 @@
+#pragma once
+#include <string>
+#include <iostream>
+#include "Token.h"
+#include "Scanner.h"
+
+
+
+enum MachineState {
+	START_STATE, IDENTIFIER_STATE, INTEGER_STATE, CANTMOVE_STATE, 
+    PLUS_STATE, MINUS_STATE, LPAREN_STATE, RPAREN_STATE,
+    RCURLY_STATE, LCURLY_STATE, SEMICOLON_STATE, LESS_STATE, GREATER_STATE,
+    ASSIGNMENT_STATE, LESSEQUAL_STATE, GREATEREQUAL_STATE, 
+    EQUAL_STATE, NOTEQUAL_STATE, BANG_STATE, ENDFILE_STATE,
+    INSERTION_STATE, NEWLINE_STATE, DIVIDE_STATE, MULTIPLY_STATE,
+    LINECOMMENT_STATE, BLOCKCOMMENT1_STATE, BLOCKCOMMENT2_STATE,
+    AND_START, AND_END, OR_START, OR_END,
+    LAST_STATE,
+};
+
+enum CharacterType {
+	LETTER_CHAR, DIGIT_CHAR, WHITESPACE_CHAR, PLUS_CHAR, MINUS_CHAR,
+    BAD_CHAR, UNDERSCORE_CHAR, LPAREN_CHAR, RPAREN_CHAR, RCURLY_CHAR, 
+    LCURLY_CHAR, SEMICOLON_CHAR, LESS_CHAR, GREATER_CHAR, EQUAL_CHAR,
+    ENDFILE_CHAR, NEWLINE_CHAR, DIVIDE_CHAR, MULTIPLY_CHAR,
+    BANG_CHAR, AMPERSAND_CHAR, PIPE_CHAR,
+	LAST_CHAR,
+};
+
+class StateMachineClass {
+    private: 
+        MachineState mCurrentState;
+        //Matrix of legal moves
+        MachineState mLegalMoves[LAST_STATE][LAST_CHAR];
+        TokenType mCorrespondingTokenType[LAST_STATE];
+
+    public:
+        StateMachineClass();
+        MachineState UpdateState(char currentCharacter, TokenType &previousTokenType);
+
+};

@@ -21,7 +21,7 @@ void main()
 	}
 	int num;
 	num = 1;
-	while (num < 4 && num < 10) {
+	while (num < 4 || num < 10) {
 		cout << num;
 		num = num + 1;
 	}

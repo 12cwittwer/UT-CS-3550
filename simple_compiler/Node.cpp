@@ -266,6 +266,7 @@ OrNode::OrNode(ExpressionNode* left, ExpressionNode* right)
 }
 
 int OrNode::Evaluate() const {
+    MSG("Evaluating Or Node");
     return mLeftExpressionNode->Evaluate() || mRightExpressionNode->Evaluate() ? 1 : 0;
 }
 
@@ -275,6 +276,7 @@ AndNode::AndNode(ExpressionNode* left, ExpressionNode* right)
 }
 
 int AndNode::Evaluate() const {
+    MSG("Evaluating AND Node");
     return mLeftExpressionNode->Evaluate() && mRightExpressionNode->Evaluate() ? 1 : 0;
 }
 

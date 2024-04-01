@@ -1,4 +1,4 @@
-#define ShowMessages 1
+#define ShowMessages 0
 #if ShowMessages
 #define MSG(x) std::cout<<x<<std::endl
 #else

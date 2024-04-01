@@ -7,6 +7,7 @@
 enum TokenType {
 	// Reserved Words:
 	VOID_TOKEN, MAIN_TOKEN, INT_TOKEN, COUT_TOKEN, IF_TOKEN, WHILE_TOKEN,
+	REPEAT_TOKEN,
 	// Relational Operators:
     LESS_TOKEN, LESSEQUAL_TOKEN, GREATER_TOKEN, GREATEREQUAL_TOKEN,
 	EQUAL_TOKEN, NOTEQUAL_TOKEN, AND_TOKEN, OR_TOKEN,
@@ -22,6 +23,7 @@ enum TokenType {
 
 const std::string gTokenTypeNames[] = {
 	"VOID", "MAIN", "INT", "COUT", "IF", "WHILE",
+	"REPEAT",
     "LESS", "LESSEQUAL", "GREATER", "GREATEREQUAL", 
 	"EQUAL", "NOTEQUAL", "AND", "OR",
 	"INSERTION", "ASSIGNMENT", "PLUS", "MINUS", "TIMES", "DIVIDE",

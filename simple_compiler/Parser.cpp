@@ -59,6 +59,9 @@ StatementNode * ParserClass::Statement() { // Add if and while statements here
     } else if (nextToken == WHILE_TOKEN) {
         sn = WhileStatement();
         return sn;
+    } else if (nextToken == REPEAT_TOKEN) {
+        sn = RepeatStatement();
+        return sn;
     } else {
         return NULL;
     }
@@ -109,6 +112,17 @@ WhileStatementNode * ParserClass::WhileStatement() {
     WhileStatementNode *wsn = new WhileStatementNode(epn, sn);
     return wsn;
 }
+
+RepeatStatementNode * ParserClass::RepeatStatement() {
+    Match(REPEAT_TOKEN);
+    Match(LPAREN_TOKEN);
+    ExpressionNode *epn = Expression();
+    Match(RPAREN_TOKEN);
+    StatementNode *sn = Statement();
+    RepeatStatementNode *rsn = new RepeatStatementNode(epn, sn);
+    return rsn;
+}
+
 
 IdentifierNode * ParserClass::Identifier() {
     std::string label = Match(IDENTIFIER_TOKEN).GetLexeme();

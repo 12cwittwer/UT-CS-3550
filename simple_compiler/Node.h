@@ -17,6 +17,9 @@ class StatementGroupNode;
 class DeclarationStatementNode;
 class AssignmentStatementNode;
 class CoutStatementNode;
+class IfStatementNode;
+class WhileStatementNode;
+class RepeatStatementNode;
 class ExpressionNode;
 class IntegerNode;
 class IdentifierNode;
@@ -142,6 +145,18 @@ class WhileStatementNode : public StatementNode {
         void Interpret();
 
     private:
+        ExpressionNode* mExpressionNode;
+        StatementNode* mStatementNode;
+};
+
+class RepeatStatementNode : public StatementNode {
+    public:
+        RepeatStatementNode(ExpressionNode* epn, StatementNode* sn);
+        virtual ~RepeatStatementNode();
+        void Interpret();
+
+    private:
+        // Need to be able to evaluate an expression, but only once
         ExpressionNode* mExpressionNode;
         StatementNode* mStatementNode;
 };

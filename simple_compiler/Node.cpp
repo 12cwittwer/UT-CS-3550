@@ -163,6 +163,24 @@ void WhileStatementNode::Interpret() {
     }
 }
 
+RepeatStatementNode::RepeatStatementNode(ExpressionNode* epn, StatementNode* sn)
+: mExpressionNode(epn), mStatementNode(sn) {
+    MSG("Constructing REPEAT Statement Node");
+}
+
+RepeatStatementNode::~RepeatStatementNode() {
+    MSG("Desctructing REPEAT Statement Node");
+    delete mExpressionNode;
+    delete mStatementNode;
+}
+
+void RepeatStatementNode::Interpret() {
+    int range = mExpressionNode->Evaluate();
+    for (int i = 0; i < range; i++) {
+        mStatementNode->Interpret();
+    }
+}
+
 ExpressionNode::ExpressionNode() {
     MSG("Constructing Expression Node");
 }

@@ -1,5 +1,13 @@
 void main()
 {
+
+	int range;
+	range = 3;
+	repeat (range + 2) {
+		cout << 5;
+		range = range + 1;
+	}
+
 	int sum;
 
 	//find the sum of 35 and 400
@@ -21,7 +29,7 @@ void main()
 	}
 	int num;
 	num = 1;
-	while (num < 4 || num < 10) {
+	while (num < 15 or num < 10) {
 		cout << num;
 		num = num + 1;
 	}

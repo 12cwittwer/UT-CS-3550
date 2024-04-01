@@ -20,6 +20,7 @@ class ParserClass {
         CoutStatementNode * CoutStatement();
         IfStatementNode * IfStatement();
         WhileStatementNode * WhileStatement();
+        RepeatStatementNode * RepeatStatement();
         IdentifierNode * Identifier();
         ExpressionNode * Expression();
         ExpressionNode * Or();

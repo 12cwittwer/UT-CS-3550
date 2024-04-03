@@ -3,6 +3,15 @@
 #include <sys/mman.h>
 #include "Instructions.h"
 
+
+const unsigned char PUSH_EBX = 0x53;
+const unsigned char PUSH_ESI = 0x56;
+const unsigned char PUSH_EDI = 0x57;
+const unsigned char POP_EDI = 0x5F;
+const unsigned char POP_ESI = 0x5E;
+const unsigned char POP_EBX = 0x5B; 
+
+
 // Some assembly like definitions for our machine code:
 const unsigned char PUSH_EBP = 0x55;
 const unsigned char MOV_EBP_ESP1 = 0x8B;
@@ -39,10 +48,22 @@ InstructionsClass::InstructionsClass()
 	Encode(PUSH_EBP);
 	Encode(MOV_EBP_ESP1);
 	Encode(MOV_EBP_ESP2);
+
+	// Make sure we save and restore all 5 Callee-Save registers.
+	// That is, EBP, ESP, EBX, ESI, and EDI
+	Encode(PUSH_EBX);
+	Encode(PUSH_ESI);
+	Encode(PUSH_EDI);
+
 }
 
 void InstructionsClass::Finish()
 {
+	// Retore Callee-Saved registers:
+	Encode(POP_EDI);
+	Encode(POP_ESI);
+	Encode(POP_EBX);
+
 	// All functions end this way:
 	Encode(POP_EBP);
 	Encode(NEAR_RET);
@@ -63,3 +84,31 @@ void InstructionsClass::Execute()
 	// Did everything work?
 	std::cout << "\nThere and back again!" << std::endl; 
 }
+
+void InstructionsClass::Encode(int x)
+{
+	*((int*)(&( mCode [mCurrent]))) = x;
+	mCurrent += sizeof(int);
+}
+
+void InstructionsClass::Encode(long long int x) 
+{
+	*((long long int*)(&( mCode [mCurrent]))) = x;
+	mCurrent += sizeof(long long int);
+}
+
+void InstructionsClass::Encode(void * p)
+{
+        int pointerSize = sizeof(p);
+
+        if (pointerSize==4)
+        {
+                Encode((int)(long long)p);
+        }
+        else if(sizeof(p)==8)
+        {
+                Encode((long long)p);
+        }
+}
+
+

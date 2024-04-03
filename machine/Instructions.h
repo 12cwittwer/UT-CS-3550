@@ -6,6 +6,11 @@ public:
 	void Encode(unsigned char c);
 	void Finish(); 
 	void Execute(); 
+    void Encode(int x);
+    void Encode(long long int x);
+    void Encode(void * p);
+
+
 private:
 	unsigned char mCode[MAX_INSTRUCTIONS]; 
 	int mCurrent; // where we are in mCode

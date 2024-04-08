@@ -13,6 +13,8 @@ endif
 
 TARGETS := instructions_tester
 
+all: $(TARGETS)
+
 run: instructions_tester
 	./instructions_tester
 

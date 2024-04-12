@@ -414,7 +414,7 @@ void InstructionsClass::PushVariable(int index)
     
     if(memAddress != nullptr) {
         Encode(MEM_TO_EAX);
-        Encode(reinterpret_cast<int64_t>(memAddress));
+        Encode(memAddress);
         Encode(PUSH_EAX);
     }
 }
@@ -426,7 +426,7 @@ void InstructionsClass::PopAndStore(int index)
 
 	int* memAddress = GetMem(index);
 	if (memAddress != nullptr) {
-    	Encode(reinterpret_cast<int64_t>(memAddress));
+    	Encode(memAddress);
 	}
 }
 

@@ -1,4 +1,5 @@
 const int MAX_INSTRUCTIONS = 5000;
+const int MAX_DATA = 5000;
 class InstructionsClass
 {
 public:
@@ -16,6 +17,9 @@ public:
 	void PopAndWrite();
 	void Call(void * function_address);
 	unsigned char * GetAddress();
+	int * GetMem(int index);
+	void PushVariable(int index);
+	void PopAndStore(int index);
 
 private:
 	unsigned char mCode[MAX_INSTRUCTIONS];
@@ -33,5 +37,5 @@ private:
 		// Jump to this offset of mCode to start program execution.
 	char mMinusString; // Holds '-'
 	char mSpaceString; // Holds ' '
-
+	int mData[MAX_DATA];
 };

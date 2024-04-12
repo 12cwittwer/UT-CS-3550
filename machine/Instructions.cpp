@@ -393,6 +393,44 @@ unsigned char * InstructionsClass::GetAddress()
 	return &(mCode[mCurrent]);
 }
 
+int * InstructionsClass::GetMem(int index)
+{
+    // Ensure the index is within the bounds of mData.
+    if(index < 0 || index >= MAX_DATA)
+    {
+        // Handle the out-of-bounds index appropriately.
+        // For example, you can print an error message and return a null pointer.
+        std::cerr << "Error: Index " << index << " out of bounds." << std::endl;
+        return nullptr;
+    }
+
+    // If the index is in bounds, return the address of the element.
+    return &(mData[index]);
+}
+
+void InstructionsClass::PushVariable(int index)
+{
+    int* memAddress = GetMem(index);
+    
+    if(memAddress != nullptr) {
+        Encode(MEM_TO_EAX);
+        Encode(reinterpret_cast<int64_t>(memAddress));
+        Encode(PUSH_EAX);
+    }
+}
+
+void InstructionsClass::PopAndStore(int index)
+{
+	Encode(POP_EAX);
+	Encode(EAX_TO_MEM);
+
+	int* memAddress = GetMem(index);
+	if (memAddress != nullptr) {
+    	Encode(reinterpret_cast<int64_t>(memAddress));
+	}
+}
+
+
 
 
 

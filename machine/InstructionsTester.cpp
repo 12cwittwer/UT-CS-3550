@@ -22,7 +22,14 @@ int main()
 	code.PushVariable(1); // from mData back onto stack
 	code.PopAndWrite();
 
+    code.PushValue(100); 
+	code.PushValue(8);
+	code.PopPopDivPush();
+	code.PopAndWrite(); // should print 12
+    
 	code.Finish();
 	code.Execute();
+
+
 	return 0;
 }

@@ -29,17 +29,17 @@ int main()
 
     code.PushValue(1);
     code.PushValue(0);
-    code.PopPopAddPush();
-    code.PopAndWrite(); // 0
+    code.PopPopOrPush();
+    code.PopAndWrite(); // 1
 
     code.PushValue(0);
     code.PushValue(0);
-    code.PopPopAddPush();
+    code.PopPopOrPush();
     code.PopAndWrite(); // 0
 
     code.PushValue(1);
     code.PushValue(1);
-    code.PopPopAndPush();
+    code.PopPopOrPush();
     code.PopAndWrite(); // 1
 
 

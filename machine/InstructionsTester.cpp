@@ -28,7 +28,7 @@ int main()
 	code.PopAndWrite(); // should print 12
 
     code.PushValue(1);
-    code.PushValue(0)
+    code.PushValue(0);
     code.PopPopAddPush();
     code.PopAndWrite(); // 0
 
@@ -40,7 +40,7 @@ int main()
     code.PushValue(1);
     code.PushValue(1);
     code.PopPopAndPush();
-    code.PopAndWrite() // 1
+    code.PopAndWrite(); // 1
 
 
 	code.Finish();

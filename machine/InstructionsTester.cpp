@@ -42,6 +42,40 @@ int main()
 	code.PopPopMulPush();
 	code.PopAndWrite(); // should print 20
 
+
+    // Test Less
+    code.PushValue(3); 
+	code.PushValue(4);
+	code.PopPopLessPush();
+	code.PopAndWrite(); // should print 1
+
+	code.PushValue(4); 
+	code.PushValue(4);
+	code.PopPopLessPush();
+	code.PopAndWrite(); // should print 0
+
+	code.PushValue(5); 
+	code.PushValue(4);
+	code.PopPopLessPush();
+	code.PopAndWrite(); // should print 0
+
+    // Test Greater
+    code.PushValue(3); 
+	code.PushValue(4);
+	code.PopPopGreaterPush();
+	code.PopAndWrite(); // should print 0
+
+	code.PushValue(4); 
+	code.PushValue(4);
+	code.PopPopGreaterPush();
+	code.PopAndWrite(); // should print 0
+
+	code.PushValue(5); 
+	code.PushValue(4);
+	code.PopPopGreaterPush();
+	code.PopAndWrite(); // should print 1
+
+
 	code.Finish();
 	code.Execute();
 

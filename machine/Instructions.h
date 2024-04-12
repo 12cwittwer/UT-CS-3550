@@ -24,6 +24,16 @@ public:
 	void PopPopAddPush();
 	void PopPopSubPush();
 	void PopPopMulPush();
+	void PopPopComparePush(unsigned char relational_operator);
+	void PopPopLessPush();
+	void PopPopGreaterPush();
+	void PopPopLessEqualPush();
+	void PopPopGreaterEqualPush();
+	void PopPopEqualPush();
+	void PopPopNotEqualPush();
+
+
+
 
 
 

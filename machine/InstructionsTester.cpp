@@ -43,36 +43,36 @@ int main()
 	code.PopAndWrite(); // should print 20
 
 
-    // Test Less
+    // Test Less Equal
     code.PushValue(3); 
 	code.PushValue(4);
-	code.PopPopLessPush();
+	code.PopPopLessEqualPush();
 	code.PopAndWrite(); // should print 1
 
 	code.PushValue(4); 
 	code.PushValue(4);
-	code.PopPopLessPush();
-	code.PopAndWrite(); // should print 0
+	code.PopPopLessEqualPush();
+	code.PopAndWrite(); // should print 1
 
 	code.PushValue(5); 
 	code.PushValue(4);
-	code.PopPopLessPush();
+	code.PopPopLessEqualPush();
 	code.PopAndWrite(); // should print 0
 
-    // Test Greater
+    // Test Greater Equal
     code.PushValue(3); 
 	code.PushValue(4);
-	code.PopPopGreaterPush();
+	code.PopPopGreaterEqualPush();
 	code.PopAndWrite(); // should print 0
 
 	code.PushValue(4); 
 	code.PushValue(4);
-	code.PopPopGreaterPush();
-	code.PopAndWrite(); // should print 0
+	code.PopPopGreaterEqualPush();
+	code.PopAndWrite(); // should print 1
 
 	code.PushValue(5); 
 	code.PushValue(4);
-	code.PopPopGreaterPush();
+	code.PopPopGreaterEqualPush();
 	code.PopAndWrite(); // should print 1
 
 

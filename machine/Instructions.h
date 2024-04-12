@@ -31,13 +31,12 @@ public:
 	void PopPopGreaterEqualPush();
 	void PopPopEqualPush();
 	void PopPopNotEqualPush();
-
-
-
-
-
-
-
+	void PopPopAndPush();
+	void PopPopOrPush();
+	unsigned char * SkipIfZeroStack();
+	unsigned char *  Jump();
+	void SetOffset(unsigned char * codeAddress, int offset);
+	void PrintAllMachineCodes(); //For Debugging
 
 private:
 	unsigned char mCode[MAX_INSTRUCTIONS];

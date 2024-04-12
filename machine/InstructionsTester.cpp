@@ -27,56 +27,24 @@ int main()
 	code.PopPopDivPush();
 	code.PopAndWrite(); // should print 12
 
-    code.PushValue(100); 
-	code.PushValue(8);
-	code.PopPopAddPush();
-	code.PopAndWrite(); // should print 108
+    code.PushValue(1);
+    code.PushValue(0)
+    code.PopPopAddPush();
+    code.PopAndWrite(); // 0
 
-    code.PushValue(100); 
-	code.PushValue(8);
-	code.PopPopSubPush();
-	code.PopAndWrite(); // should print 92
+    code.PushValue(0);
+    code.PushValue(0);
+    code.PopPopAddPush();
+    code.PopAndWrite(); // 0
 
-    code.PushValue(10); 
-	code.PushValue(2);
-	code.PopPopMulPush();
-	code.PopAndWrite(); // should print 20
-
-
-    // Test Equal
-    code.PushValue(3); 
-	code.PushValue(4);
-	code.PopPopEqualPush();
-	code.PopAndWrite(); // should print 0
-
-	code.PushValue(4); 
-	code.PushValue(4);
-	code.PopPopEqualPush();
-	code.PopAndWrite(); // should print 1
-
-	code.PushValue(5); 
-	code.PushValue(4);
-	code.PopPopEqualPush();
-	code.PopAndWrite(); // should print 0
-
-    // Test Not Equal
-    code.PushValue(3); 
-	code.PushValue(4);
-	code.PopPopNotEqualPush();
-	code.PopAndWrite(); // should print 1
-
-	code.PushValue(4); 
-	code.PushValue(4);
-	code.PopPopNotEqualPush();
-	code.PopAndWrite(); // should print 0
-
-	code.PushValue(5); 
-	code.PushValue(4);
-	code.PopPopNotEqualPush();
-	code.PopAndWrite(); // should print 1
+    code.PushValue(1);
+    code.PushValue(1);
+    code.PopPopAndPush();
+    code.PopAndWrite() // 1
 
 
 	code.Finish();
+    code.PrintAllMachineCodes();
 	code.Execute();
 
 

@@ -82,6 +82,13 @@ const unsigned char JG = 0x7F;
 //const unsigned char JGE = 0x7D; // already declared
 const unsigned char JE = 0x74;
 //const unsigned char JNE = 0x75; // already declared
+const unsigned char JUMP_ALWAYS = 0xEB; // followed by 1 byte value
+
+// Jumping
+const unsigned char JE_FAR1 = 0x0f; // 4 byte jump
+const unsigned char JE_FAR2 = 0x84; // 4 byte jump
+const unsigned char JUMP_ALWAYS_FAR = 0xE9; // 4 byte jump
+
 
 
 
@@ -535,6 +542,99 @@ void InstructionsClass::PopPopNotEqualPush()
 {
         PopPopComparePush(JNE);
 }
+
+void InstructionsClass::PopPopAndPush()
+{
+        Encode(IMMEDIATE_TO_EAX); // load A register with 0
+        Encode(0);
+        Encode(POP_EBX); // load B register with stack item 2
+        Encode(CMP_EAX_EBX1);
+        Encode(CMP_EAX_EBX2);
+        Encode(POP_EBX); // load B register with stack item 1
+        Encode(JE); // if stack item 2 is zero, jump to FALSE code
+        Encode((unsigned char)11);
+        Encode(CMP_EAX_EBX1);
+        Encode(CMP_EAX_EBX2);
+        Encode(JE); // if stack item 1 is zero, jump to FALSE code
+        Encode((unsigned char)7);
+        // TRUE code:
+        Encode(IMMEDIATE_TO_EAX); // load A register with 1
+        Encode(1);
+        Encode(JUMP_ALWAYS); // Jump around FALSE code
+        Encode((unsigned char)5);
+        // FALSE code:
+        Encode(IMMEDIATE_TO_EAX); // load A register with 0
+        Encode(0);
+        // Save A to the stack
+        Encode(PUSH_EAX); // push 1 or 0
+}
+
+void InstructionsClass::PopPopOrPush()
+{
+        Encode(IMMEDIATE_TO_EAX); // load A register with 0
+        Encode(0);
+        Encode(POP_EBX); // load B register with stack item 2
+        Encode(CMP_EAX_EBX1);
+        Encode(CMP_EAX_EBX2);
+        Encode(POP_EBX); // load B register with stack item 1
+        Encode(JNE); // if stack item 2 is not zero, jump to TRUE code
+        Encode((unsigned char)11);
+        Encode(CMP_EAX_EBX1);
+        Encode(CMP_EAX_EBX2);
+        Encode(JNE); // if stack item 1 is not zero, jump to TRUE code
+        Encode((unsigned char)7);
+        // FALSE code:
+        Encode(IMMEDIATE_TO_EAX); // load A register with 0
+        Encode(0);
+        Encode(JUMP_ALWAYS); // Jump around TRUE code
+        Encode((unsigned char)5);
+        // TRUE code:
+        Encode(IMMEDIATE_TO_EAX); // load A register with 1
+        Encode(1);
+        // Save A to the stack
+        Encode(PUSH_EAX); // push 1 or 0
+}
+
+unsigned char * InstructionsClass::SkipIfZeroStack()
+{
+        Encode(POP_EBX);
+        Encode(IMMEDIATE_TO_EAX); // load A register with 0
+        Encode(0);
+        Encode(CMP_EAX_EBX1);
+        Encode(CMP_EAX_EBX2);
+        Encode(JE_FAR1); // If stack had zero, do a jump
+        Encode(JE_FAR2);
+        unsigned char * addressToFillInLater = GetAddress();
+        Encode(0); // the exact number of bytes to skip gets set later,
+                   // when we know it!  Call SetOffset() to do that.
+        return addressToFillInLater;
+}
+
+unsigned char *  InstructionsClass::Jump()
+{
+        Encode(JUMP_ALWAYS_FAR);
+        unsigned char * addressToFillInLater = GetAddress();
+        Encode(0); // the exact number of bytes to jump gets set later,
+                   // when we know it!  Call SetOffset() to do that.
+        return addressToFillInLater;
+}
+
+void InstructionsClass::SetOffset(unsigned char * codeAddress, int offset)
+{
+        *((int*)codeAddress) = offset;
+}
+
+void InstructionsClass::PrintAllMachineCodes() //For Debugging
+{
+	for (int i=0; i<mCurrent; i++)
+	{
+	printf("HEX: %2x  Decimal: %3i\n", (int)mCode[i], (int)mCode[i]);
+	}
+}
+
+
+
+
 
 
 

@@ -20,6 +20,8 @@ public:
 	int * GetMem(int index);
 	void PushVariable(int index);
 	void PopAndStore(int index);
+	void PopPopDivPush();
+
 
 private:
 	unsigned char mCode[MAX_INSTRUCTIONS];

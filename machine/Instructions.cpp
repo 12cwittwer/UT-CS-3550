@@ -65,6 +65,15 @@ const unsigned char PUSH_EDX = 0x52;
 const unsigned char CMP_ECX1 = 0x83; // followed by 1 byte
 const unsigned char CMP_ECX2 = 0xF9;
 
+// For math operations
+const unsigned char ADD_EAX_EBX1 = 0x03;
+const unsigned char ADD_EAX_EBX2 = 0xC3;
+const unsigned char SUB_EAX_EBX1 = 0x2B;
+const unsigned char SUB_EAX_EBX2 = 0xC3;
+const unsigned char MUL_EAX_EBX1 = 0xF7;
+const unsigned char MUL_EAX_EBX2 = 0xEB;
+
+
 
 // Put one instruction at a time into mCode:
 void InstructionsClass::Encode(unsigned char c)
@@ -437,6 +446,33 @@ void InstructionsClass::PopPopDivPush()
 	Encode(CDQ); // Necessary to clear the EDX before the divide.
 	Encode(DIV_EAX_EBX1); // Divide EAX by EBX. Result in EAX.
 	Encode(DIV_EAX_EBX2);
+	Encode(PUSH_EAX);
+}
+
+void InstructionsClass::PopPopAddPush()
+{
+	Encode(POP_EBX);
+	Encode(POP_EAX);
+	Encode(ADD_EAX_EBX1);
+	Encode(ADD_EAX_EBX2);
+	Encode(PUSH_EAX);
+}
+
+void InstructionsClass::PopPopSubPush()
+{
+	Encode(POP_EBX);
+	Encode(POP_EAX);
+	Encode(SUB_EAX_EBX1);
+	Encode(SUB_EAX_EBX2);
+	Encode(PUSH_EAX);
+}
+
+void InstructionsClass::PopPopMulPush()
+{
+	Encode(POP_EBX);
+	Encode(POP_EAX);
+	Encode(MUL_EAX_EBX1);
+	Encode(MUL_EAX_EBX2);
 	Encode(PUSH_EAX);
 }
 

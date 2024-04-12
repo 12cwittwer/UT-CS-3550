@@ -26,7 +26,22 @@ int main()
 	code.PushValue(8);
 	code.PopPopDivPush();
 	code.PopAndWrite(); // should print 12
-    
+
+    code.PushValue(100); 
+	code.PushValue(8);
+	code.PopPopAddPush();
+	code.PopAndWrite(); // should print 108
+
+    code.PushValue(100); 
+	code.PushValue(8);
+	code.PopPopSubPush();
+	code.PopAndWrite(); // should print 92
+
+    code.PushValue(10); 
+	code.PushValue(2);
+	code.PopPopMulPush();
+	code.PopAndWrite(); // should print 20
+
 	code.Finish();
 	code.Execute();
 

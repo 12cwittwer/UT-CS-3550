@@ -21,6 +21,12 @@ public:
 	void PushVariable(int index);
 	void PopAndStore(int index);
 	void PopPopDivPush();
+	void PopPopAddPush();
+	void PopPopSubPush();
+	void PopPopMulPush();
+
+
+
 
 
 private:

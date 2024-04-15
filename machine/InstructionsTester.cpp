@@ -30,7 +30,7 @@ int main()
     code.PushValue(1);
     code.PushValue(0);
     code.PopPopAndPush();
-    code.PopAndWrite(); // 1
+    code.PopAndWrite(); // 0
 
     code.PushValue(0);
     code.PushValue(0);
@@ -42,6 +42,15 @@ int main()
     code.PopPopAndPush();
     code.PopAndWrite(); // 1
 
+    code.PushValue(10);
+    code.PushValue(10);
+    code.PopPopDivPush();
+    code.PopAndWrite(); // 1
+
+    code.PushValue(10);
+    code.PushValue(10);
+    code.PopPopMulPush();
+    code.PopAndWrite(); // 1
 
 	code.Finish();
     code.PrintAllMachineCodes();

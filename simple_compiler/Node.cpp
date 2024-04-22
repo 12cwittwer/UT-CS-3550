@@ -18,6 +18,11 @@ void StartNode::Interpret() {
     programNode->Interpret();
 }
 
+void StartNode::Code(InstructionsClass &machineCode)
+{
+    MSG("Coding Start Node");
+	programNode->Code(machineCode);
+}
 
 ProgramNode::ProgramNode(BlockNode* blockNode)
 :blockNode(blockNode) {
@@ -34,6 +39,12 @@ void ProgramNode::Interpret() {
     blockNode->Interpret();
 }
 
+void ProgramNode::Code(InstructionsClass &machineCode)
+{
+    MSG("Coding Program Node");
+	blockNode->Code(machineCode);
+}
+
 BlockNode::BlockNode(StatementGroupNode* statementGroupNode) 
 :statementGroupNode(statementGroupNode) {
     MSG("Constructing Block Node");
@@ -47,6 +58,11 @@ BlockNode::~BlockNode() {
 void BlockNode::Interpret() {
     MSG("Interpreting Block Node");
     statementGroupNode->Interpret();
+}
+
+void BlockNode::Code(InstructionsClass &machineCode) {
+    MSG("Coding Block Node");
+    statementGroupNode->Code(machineCode);
 }
 
 StatementGroupNode::StatementGroupNode() {
@@ -68,6 +84,13 @@ void StatementGroupNode::Interpret() {
     MSG("Interpreting Statement Group Node");
     for (unsigned int i = 0; i < mStatementNodePointers.size(); i++) {
         mStatementNodePointers[i]->Interpret();
+    }
+}
+
+void StatementGroupNode::Code(InstructionsClass &machineCode) {
+    MSG("Coding Statement Group Node");
+    for (unsigned int i = 0; i < mStatementNodePointers.size(); i++) {
+        mStatementNodePointers[i]->Code(machineCode);
     }
 }
 
@@ -97,6 +120,12 @@ void DeclarationStatementNode::Interpret() {
     MSG("Interpreting Declaration Statement Node");
     mIdentifierNode->DeclareVariable();
 }
+void DeclarationStatementNode::Code(InstructionsClass &machineCode) {
+    MSG("Coding Declaration Statment Node");
+    (void)machineCode;
+    mIdentifierNode->DeclareVariable();
+}
+
 
 AssignmentStatementNode::AssignmentStatementNode(IdentifierNode* idn, ExpressionNode* epn) 
  : mIdentifierNode(idn), mExpressionNode(epn) {
@@ -115,6 +144,14 @@ void AssignmentStatementNode::Interpret() {
     mIdentifierNode->SetValue(outcome);
 }
 
+void AssignmentStatementNode::Code(InstructionsClass &machineCode) {
+    MSG("Coding Assignment Statement Node");
+    mExpressionNode->CodeEvaluate(machineCode);
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PopAndStore(index);
+}
+
+
 CoutStatementNode::CoutStatementNode(ExpressionNode* epn) 
 : mExpressionNode(epn) {
     MSG("Constructing Cout Statement Node");
@@ -128,6 +165,12 @@ CoutStatementNode::~CoutStatementNode() {
 void CoutStatementNode::Interpret() {
     std::cout << mExpressionNode->Evaluate() << std::endl;
 }
+
+void CoutStatementNode::Code(InstructionsClass &machineCode) {
+    mExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopAndWrite();
+}
+
 
 IfStatementNode::IfStatementNode(ExpressionNode* epn, StatementNode* sn) 
 : mExpressionNode(epn), mStatementNode(sn) {
@@ -146,6 +189,18 @@ void IfStatementNode::Interpret() {
     }
 }
 
+void IfStatementNode::Code(InstructionsClass &machineCode)
+{
+	mExpressionNode->CodeEvaluate(machineCode);
+	unsigned char * InsertAddress = machineCode.SkipIfZeroStack();
+	unsigned char * address1 = machineCode.GetAddress();
+	mStatementNode->Code(machineCode);
+	unsigned char * address2 = machineCode.GetAddress();
+	machineCode.SetOffset(InsertAddress, (int)(address2-address1));
+}
+
+
+
 WhileStatementNode::WhileStatementNode(ExpressionNode* epn, StatementNode* sn) 
 : mExpressionNode(epn), mStatementNode(sn) {
     MSG("Constructing While Statement Node");
@@ -163,6 +218,20 @@ void WhileStatementNode::Interpret() {
     }
 }
 
+void WhileStatementNode::Code(InstructionsClass &machineCode) {
+    unsigned char * address1 = machineCode.GetAddress();
+    mExpressionNode->CodeEvaluate(machineCode);
+    unsigned char * InsertAddressToSkip = machineCode.SkipIfZeroStack();
+    unsigned char * address2 = machineCode.GetAddress();
+    mStatementNode->Code(machineCode);
+    unsigned char * address3 = machineCode.GetAddress();
+    unsigned char * InsertAddressToJump = machineCode.Jump();
+    machineCode.SetOffset(InsertAddressToSkip, (int)(address3 - address2));
+    machineCode.SetOffset(InsertAddressToJump, (int)(address1 - address3));
+
+}
+
+
 RepeatStatementNode::RepeatStatementNode(ExpressionNode* epn, StatementNode* sn)
 : mExpressionNode(epn), mStatementNode(sn) {
     MSG("Constructing REPEAT Statement Node");
@@ -179,6 +248,23 @@ void RepeatStatementNode::Interpret() {
     for (int i = 0; i < range; i++) {
         mStatementNode->Interpret();
     }
+}
+
+void RepeatStatementNode::Code(InstructionsClass &machineCode) {
+    (void)machineCode;
+    return;
+    // mExpressionNode->CodeEvaluate(machineCode);
+    // unsigned char * startAddress = machineCode.GetAddress();
+    // unsigned char * skipToCondition = machineCode.Jump();
+    // unsigned char * loopBodyStart = machineCode.GetAddress();
+    // mStatementNode->Code(machineCode);
+    // machineCode.DecrementStack();
+    // unsigned char * conditionCheck = machineCode.GetAddress();
+    // machineCode.CopyToStack();  // Ensure the loop counter remains for the next iteration
+    // machineCode.SkipIfZeroStack();
+    // unsigned char * endAddress = machineCode.GetAddress();
+    // machineCode.SetOffset(conditionCheck, (int)(loopBodyStart - endAddress));
+    // machineCode.SetOffset(skipToCondition, (int)(conditionCheck - loopBodyStart));
 }
 
 ExpressionNode::ExpressionNode() {
@@ -204,6 +290,10 @@ int IntegerNode::Evaluate() const {
     return mInteger;
 }
 
+void IntegerNode::CodeEvaluate(InstructionsClass &machineCode) {
+    machineCode.PushValue(mInteger);
+}
+
 IdentifierNode::IdentifierNode(const std::string& label, SymbolTableClass* symbolTable) 
 : mLabel(label), mSymbolTable(symbolTable) {
     MSG("Constructing Identifier Node");
@@ -227,6 +317,10 @@ int IdentifierNode::Evaluate() const {
     return mSymbolTable->GetValue(mLabel);
 }
 
+void IdentifierNode::CodeEvaluate(InstructionsClass &machineCode) {
+    machineCode.PushVariable(this->GetIndex());
+}
+
 BinaryOperatorNode::BinaryOperatorNode(ExpressionNode* left, ExpressionNode* right) 
 :mLeftExpressionNode(left), mRightExpressionNode(right) {
     MSG("Constructing Binary Operator Node");
@@ -248,6 +342,14 @@ int PlusNode::Evaluate() const {
     return mLeftExpressionNode->Evaluate() + mRightExpressionNode->Evaluate();
 }
 
+void PlusNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopAddPush();
+}
+
+
 MinusNode::MinusNode(ExpressionNode* left, ExpressionNode* right)
 : BinaryOperatorNode(left, right) {
     MSG("Constructing Minus Node");
@@ -256,6 +358,13 @@ MinusNode::MinusNode(ExpressionNode* left, ExpressionNode* right)
 int MinusNode::Evaluate() const {
     MSG("Evaluating Minus Node");
     return mLeftExpressionNode->Evaluate() - mRightExpressionNode->Evaluate();
+}
+
+void MinusNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopSubPush();
 }
 
 TimesNode::TimesNode(ExpressionNode* left, ExpressionNode* right)
@@ -268,6 +377,13 @@ int TimesNode::Evaluate() const {
     return mLeftExpressionNode->Evaluate() * mRightExpressionNode->Evaluate();
 }
 
+void TimesNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopMulPush();
+}
+
 DivideNode::DivideNode(ExpressionNode* left, ExpressionNode* right)
 : BinaryOperatorNode(left, right) {
     MSG("Constructing Divide Node");
@@ -276,6 +392,13 @@ DivideNode::DivideNode(ExpressionNode* left, ExpressionNode* right)
 int DivideNode::Evaluate() const {
     MSG("Evaluating Divide Node");
     return mLeftExpressionNode->Evaluate() / mRightExpressionNode->Evaluate();
+}
+
+void DivideNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopDivPush();
 }
 
 OrNode::OrNode(ExpressionNode* left, ExpressionNode* right) 
@@ -288,6 +411,13 @@ int OrNode::Evaluate() const {
     return mLeftExpressionNode->Evaluate() || mRightExpressionNode->Evaluate() ? 1 : 0;
 }
 
+void OrNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopOrPush();
+}
+
 AndNode::AndNode(ExpressionNode* left, ExpressionNode* right) 
 : BinaryOperatorNode(left, right) {
     MSG("Constructing AND Node");
@@ -296,6 +426,13 @@ AndNode::AndNode(ExpressionNode* left, ExpressionNode* right)
 int AndNode::Evaluate() const {
     MSG("Evaluating AND Node");
     return mLeftExpressionNode->Evaluate() && mRightExpressionNode->Evaluate() ? 1 : 0;
+}
+
+void AndNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopAndPush();
 }
 
 LessNode::LessNode(ExpressionNode* left, ExpressionNode* right)
@@ -308,6 +445,13 @@ int LessNode::Evaluate() const {
     return mLeftExpressionNode->Evaluate() < mRightExpressionNode->Evaluate() ? 1 : 0;
 }
 
+void LessNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopLessPush();
+}
+
 LessEqualNode::LessEqualNode(ExpressionNode* left, ExpressionNode* right)
 : BinaryOperatorNode(left, right) {
     MSG("Constructing Less Equal Node");
@@ -316,6 +460,13 @@ LessEqualNode::LessEqualNode(ExpressionNode* left, ExpressionNode* right)
 int LessEqualNode::Evaluate() const {
     MSG("Evaluating Less Equal Node");
     return mLeftExpressionNode->Evaluate() <= mRightExpressionNode->Evaluate() ? 1 : 0;
+}
+
+void LessEqualNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopLessEqualPush();
 }
 
 GreaterNode::GreaterNode(ExpressionNode* left, ExpressionNode* right)
@@ -328,6 +479,13 @@ int GreaterNode::Evaluate() const {
     return mLeftExpressionNode->Evaluate() > mRightExpressionNode->Evaluate() ? 1 : 0;
 }
 
+void GreaterNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopGreaterPush();
+}
+
 GreaterEqualNode::GreaterEqualNode(ExpressionNode* left, ExpressionNode* right)
 : BinaryOperatorNode(left, right) {
     MSG("Constructing Greater Equal Node");
@@ -336,6 +494,13 @@ GreaterEqualNode::GreaterEqualNode(ExpressionNode* left, ExpressionNode* right)
 int GreaterEqualNode::Evaluate() const {
     MSG("Evaluating Greater Equal Node");
     return mLeftExpressionNode->Evaluate() >= mRightExpressionNode->Evaluate() ? 1 : 0;
+}
+
+void GreaterEqualNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopGreaterEqualPush();
 }
 
 EqualNode::EqualNode(ExpressionNode* left, ExpressionNode* right)
@@ -348,6 +513,13 @@ int EqualNode::Evaluate() const {
     return mLeftExpressionNode->Evaluate() == mRightExpressionNode->Evaluate() ? 1 : 0;
 }
 
+void EqualNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopEqualPush();
+}
+
 NotEqualNode::NotEqualNode(ExpressionNode* left, ExpressionNode* right)
 : BinaryOperatorNode(left, right) {
     MSG("Constructing Not Equal Node");
@@ -356,4 +528,11 @@ NotEqualNode::NotEqualNode(ExpressionNode* left, ExpressionNode* right)
 int NotEqualNode::Evaluate() const {
     MSG("Evaluating Not Equal Node");
     return mLeftExpressionNode->Evaluate() != mRightExpressionNode->Evaluate() ? 1 : 0;
+}
+
+void NotEqualNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopNotEqualPush();
 }

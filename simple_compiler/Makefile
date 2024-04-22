@@ -51,6 +51,12 @@ Scanner.o: Scanner.cpp Scanner.h
 Parser.o: Parser.cpp Parser.h
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
+InstructionsTester.o: InstructionsTester.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+Instructions.o: Instructions.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
 clean:
 	-rm -f *.o *~
 	-rm -f $(TARGETS)

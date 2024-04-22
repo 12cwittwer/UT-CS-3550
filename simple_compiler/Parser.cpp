@@ -75,13 +75,32 @@ DeclarationStatementNode * ParserClass::DeclarationStatement() {
     return ds;
 }
 
-AssignmentStatementNode * ParserClass::AssignmentStatement() {
+StatementNode * ParserClass::AssignmentStatement() { // Branch for the three different scenarios
     IdentifierNode *id = Identifier();
-    Match(ASSIGNMENT_TOKEN);
-    ExpressionNode *ex = Expression();
-    Match(SEMICOLON_TOKEN);
-    AssignmentStatementNode *as = new AssignmentStatementNode(id, ex);
-    return as;
+    TokenClass nextTokenClass = mScannerClass->PeekNextToken();
+    TokenType nextToken = nextTokenClass.GetTokenType();
+    StatementNode *as = NULL;
+    if (nextToken == ASSIGNMENT_TOKEN) {
+        Match(nextToken);
+        ExpressionNode *ex = Expression();
+        Match(SEMICOLON_TOKEN);
+        as = new AssignmentStatementNode(id, ex);
+        return as;
+    } else if (nextToken == PLUSEQUAL_TOKEN) {
+        Match(nextToken);
+        ExpressionNode *ex = Expression();
+        Match(SEMICOLON_TOKEN);
+        as = new PlusEqualStatementNode(id, ex);
+        return as;
+    } else if (nextToken == MINUSEQUAL_TOKEN) {
+        Match(nextToken);
+        ExpressionNode *ex = Expression();
+        Match(SEMICOLON_TOKEN);
+        as = new MinusEqualStatementNode(id, ex);
+        return as;
+    } else {
+        return NULL;
+    }
 }
 
 CoutStatementNode * ParserClass::CoutStatement() {

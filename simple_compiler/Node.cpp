@@ -151,6 +151,58 @@ void AssignmentStatementNode::Code(InstructionsClass &machineCode) {
     machineCode.PopAndStore(index);
 }
 
+PlusEqualStatementNode::PlusEqualStatementNode(IdentifierNode* idn, ExpressionNode* epn) 
+ : mIdentifierNode(idn), mExpressionNode(epn) {
+    MSG("Constructing Plus Equal Statement Node");
+ }
+
+ PlusEqualStatementNode::~PlusEqualStatementNode() {
+    MSG("Destructing Plus Equal Statement Node");
+    delete mIdentifierNode;
+    delete mExpressionNode;
+}
+
+void PlusEqualStatementNode::Interpret() {
+    MSG("Interpreting Plus Equal Statement Node");
+    int prev = mIdentifierNode->Evaluate();
+    int outcome = mExpressionNode->Evaluate();
+    mIdentifierNode->SetValue(prev + outcome);
+}
+
+void PlusEqualStatementNode::Code(InstructionsClass &machineCode) { // Look at book for Code()
+    MSG("Coding Plus Equal Statement Node");
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PushValue(index);
+    mExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopAddPush();
+    machineCode.PopAndStore(index);
+}
+
+MinusEqualStatementNode::MinusEqualStatementNode(IdentifierNode* idn, ExpressionNode* epn) 
+ : mIdentifierNode(idn), mExpressionNode(epn) {
+    MSG("Constructing Minus Equal Statement Node");
+ }
+
+ MinusEqualStatementNode::~MinusEqualStatementNode() {
+    MSG("Destructing Minus Equal Statement Node");
+    delete mIdentifierNode;
+    delete mExpressionNode;
+}
+
+void MinusEqualStatementNode::Interpret() {
+    MSG("Interpreting Minus Equal Statement Node");
+    int prev = mIdentifierNode->Evaluate();
+    int outcome = mExpressionNode->Evaluate();
+    mIdentifierNode->SetValue(prev - outcome);
+}
+
+void MinusEqualStatementNode::Code(InstructionsClass &machineCode) { // Look at book for Code()
+    MSG("Coding Minus Equal Statement Node");
+    mExpressionNode->CodeEvaluate(machineCode);
+    int index = mIdentifierNode->GetIndex();
+    machineCode.PopAndStore(index);
+}
+
 
 CoutStatementNode::CoutStatementNode(ExpressionNode* epn) 
 : mExpressionNode(epn) {

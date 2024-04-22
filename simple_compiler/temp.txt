@@ -1,3 +1,10 @@
+	int r;
+	r = 0;
+	while (r / 2 < 4) {
+		cout << r;
+		r = r + 1;
+	}
+
 	int range;
 	range = 0;
 	cout << range;

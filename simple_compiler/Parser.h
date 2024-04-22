@@ -16,7 +16,7 @@ class ParserClass {
         StatementGroupNode * StatementGroup();
         StatementNode * Statement();
         DeclarationStatementNode * DeclarationStatement();
-        AssignmentStatementNode * AssignmentStatement(); 
+        StatementNode * AssignmentStatement(); 
         CoutStatementNode * CoutStatement();
         IfStatementNode * IfStatement();
         WhileStatementNode * WhileStatement();

@@ -63,6 +63,10 @@ StateMachineClass::StateMachineClass()
     mLegalMoves[START_STATE][PIPE_CHAR] = OR_START;
     mLegalMoves[OR_START][PIPE_CHAR] = OR_END; 
 
+    // Special States
+    mLegalMoves[PLUS_STATE][EQUAL_CHAR] = PLUSEQUAL_STATE;
+    mLegalMoves[MINUS_STATE][EQUAL_CHAR] = MINUSEQUAL_STATE;
+
     //Initialize all states to correspond to BAD_TOKEN
     for (int i = 0; i < LAST_STATE; i++) {
         mCorrespondingTokenType[i] = BAD_TOKEN; 
@@ -93,6 +97,10 @@ StateMachineClass::StateMachineClass()
     mCorrespondingTokenType[MULTIPLY_STATE] = TIMES_TOKEN;
     mCorrespondingTokenType[EQUAL_STATE] = EQUAL_TOKEN;
     mCorrespondingTokenType[NOTEQUAL_STATE] = NOTEQUAL_TOKEN;
+
+    //Special tokens
+    mCorrespondingTokenType[MINUSEQUAL_STATE] = MINUSEQUAL_TOKEN;
+    mCorrespondingTokenType[PLUSEQUAL_STATE] = PLUSEQUAL_TOKEN;
 
     //Connect AND and OR states with TOKENS
     mCorrespondingTokenType[AND_END] = AND_TOKEN;

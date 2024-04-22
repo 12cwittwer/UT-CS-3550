@@ -606,8 +606,9 @@ void InstructionsClass::DecrementStack() {
 }
 
 void InstructionsClass::CopyToStack() {
+	return
 	Encode(POP_EAX);
-	Encode(MOV_EAX)
+	// Encode(MOV_EAX);
 }
 
 unsigned char * InstructionsClass::SkipIfZeroStack()

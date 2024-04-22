@@ -33,7 +33,7 @@ Symbol.o: Symbol.cpp Symbol.h
 #simple_compiler: main.o Token.o StateMachine.o Scanner.o Symbol.o Parser.o Node.o
 #	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(OPENGL_LDFLAGS)
 
-simple_compiler: main.o Token.o StateMachine.o Scanner.o Symbol.o Parser.o Node.o
+simple_compiler: main.o Token.o StateMachine.o Scanner.o Symbol.o Parser.o Node.o Instructions.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 main.o: Main.cpp Token.h

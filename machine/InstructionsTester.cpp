@@ -17,40 +17,16 @@ int main()
 {
 	InstructionsClass code;
 
+    unsigned char * address1 = machineCode.GetAddress();
 	code.PushValue(500); // 500 to stack
 	code.PopAndStore(1); // to any slot number of mData
 	code.PushVariable(1); // from mData back onto stack
 	code.PopAndWrite();
+    unsigned char * address2 = machineCode.GetAddress();
 
-    code.PushValue(100); 
-	code.PushValue(8);
-	code.PopPopDivPush();
-	code.PopAndWrite(); // should print 12
+    unsigned char * InsertAddressToJump = machineCode.Jump();
+    machineCode.SetOffset(InsertAddressToJump, (int)(address2 - address1));
 
-    code.PushValue(1);
-    code.PushValue(0);
-    code.PopPopAndPush();
-    code.PopAndWrite(); // 0
-
-    code.PushValue(0);
-    code.PushValue(0);
-    code.PopPopAndPush();
-    code.PopAndWrite(); // 0
-
-    code.PushValue(1);
-    code.PushValue(1);
-    code.PopPopAndPush();
-    code.PopAndWrite(); // 1
-
-    code.PushValue(10);
-    code.PushValue(10);
-    code.PopPopDivPush();
-    code.PopAndWrite(); // 1
-
-    code.PushValue(10);
-    code.PushValue(10);
-    code.PopPopMulPush();
-    code.PopAndWrite(); // 1
 
 	code.Finish();
     code.PrintAllMachineCodes();

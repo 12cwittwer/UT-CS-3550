@@ -1,9 +1,37 @@
 void main()
 {	
+	int r;
+	r = 0;
+	while (r / 2 < 4) {
+		cout << r;
+		r = r + 1;
+	}
+
 	int range;
 	range = 0;
-	while (range / 2 < 4) {
-		cout << range;
-		range = range + 1;
+	cout << range;
+	range = range + 1;
+	cout << range;
+
+
+	if (range >= 0){
+		cout << range * 2;
 	}
+
+	if (range >= 1) {
+		cout << range * 3;
+	}
+
+	if (range > 10) {
+		cout << range * 4;
+	}
+
+	if (range > 10 || range < 0) {
+		cout << range * 5;
+	}
+
+	if (range > 0 && range < 5) {
+		cout << range - 6;
+	}
+
 }

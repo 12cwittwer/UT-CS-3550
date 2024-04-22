@@ -14,7 +14,7 @@ void CodeAndExecute(std::string inputFile);
 int main()  {
 	// TestMachine();
 	// TestParser();
-	// TestInterpreter();
+	TestInterpreter();
 	CodeAndExecute("code.txt");
 
 	return 0;

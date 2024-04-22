@@ -224,11 +224,10 @@ void WhileStatementNode::Code(InstructionsClass &machineCode) {
     unsigned char * InsertAddressToSkip = machineCode.SkipIfZeroStack();
     unsigned char * address2 = machineCode.GetAddress();
     mStatementNode->Code(machineCode);
-    unsigned char * address3 = machineCode.GetAddress();
     unsigned char * InsertAddressToJump = machineCode.Jump();
+    unsigned char * address3 = machineCode.GetAddress();
     machineCode.SetOffset(InsertAddressToSkip, (int)(address3 - address2));
     machineCode.SetOffset(InsertAddressToJump, (int)(address1 - address3));
-
 }
 
 

@@ -4,6 +4,6 @@ void main()
 	range = 0;
 	while (range / 2 < 4) {
 		cout << range;
-		range = range + 2;
+		range = range + 1;
 	}
 }

@@ -1,4 +1,5 @@
 #include "Instructions.h"
+#include "iostream"
 
 // int main() {
 //     InstructionsClass code;
@@ -25,7 +26,8 @@ int main()
     unsigned char * address2 = code.GetAddress();
 
     unsigned char * InsertAddressToJump = code.Jump();
-    code.SetOffset(InsertAddressToJump, (int)(address2 - address1));
+    std::cout << (unsigned int)(address2 - address1) << std::endl;
+    code.SetOffset(InsertAddressToJump, (int)(address2 - address1) * -1);
 
 
 	code.Finish();

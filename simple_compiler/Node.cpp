@@ -172,7 +172,7 @@ void PlusEqualStatementNode::Interpret() {
 void PlusEqualStatementNode::Code(InstructionsClass &machineCode) { // Look at book for Code()
     MSG("Coding Plus Equal Statement Node");
     int index = mIdentifierNode->GetIndex();
-    machineCode.PushValue(index);
+    machineCode.PushVariable(index);
     mExpressionNode->CodeEvaluate(machineCode);
     machineCode.PopPopAddPush();
     machineCode.PopAndStore(index);
@@ -198,8 +198,10 @@ void MinusEqualStatementNode::Interpret() {
 
 void MinusEqualStatementNode::Code(InstructionsClass &machineCode) { // Look at book for Code()
     MSG("Coding Minus Equal Statement Node");
-    mExpressionNode->CodeEvaluate(machineCode);
     int index = mIdentifierNode->GetIndex();
+    machineCode.PushVariable(index);
+    mExpressionNode->CodeEvaluate(machineCode);
+    machineCode.PopPopSubPush();
     machineCode.PopAndStore(index);
 }
 

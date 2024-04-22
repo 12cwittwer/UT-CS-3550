@@ -17,15 +17,15 @@ int main()
 {
 	InstructionsClass code;
 
-    unsigned char * address1 = machineCode.GetAddress();
+    unsigned char * address1 = code.GetAddress();
 	code.PushValue(500); // 500 to stack
 	code.PopAndStore(1); // to any slot number of mData
 	code.PushVariable(1); // from mData back onto stack
 	code.PopAndWrite();
-    unsigned char * address2 = machineCode.GetAddress();
+    unsigned char * address2 = code.GetAddress();
 
-    unsigned char * InsertAddressToJump = machineCode.Jump();
-    machineCode.SetOffset(InsertAddressToJump, (int)(address2 - address1));
+    unsigned char * InsertAddressToJump = code.Jump();
+    code.SetOffset(InsertAddressToJump, (int)(address2 - address1));
 
 
 	code.Finish();

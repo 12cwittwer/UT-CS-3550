@@ -37,6 +37,7 @@ public:
 	void DecrementStack();
 	void CopyToStack();
 	unsigned char * SkipIfZeroStack();
+	unsigned char * SkipIfNotZeroStack();
 	unsigned char *  Jump();
 	void SetOffset(unsigned char * codeAddress, int offset);
 	void PrintAllMachineCodes(); //For Debugging

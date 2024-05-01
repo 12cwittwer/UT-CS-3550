@@ -1,7 +1,11 @@
 void main()
 {	
 	int mod;
-	mod = (5 * 7) % (5 + 6);
+	mod = (5 * 7) % (5 + 6); // should be 2
+	cout << mod;
+	mod = 16 % 8; //should be 0
+	cout << mod;
+	mod = 3 * 3 % 5; // should be 4
 	cout << mod;
 
 	int i;
@@ -9,5 +13,11 @@ void main()
 	do {
 		i = i + 1;
 		cout << i;
-	} while (i < 6);
+	} while (i < 6); // Should print 1 - 6
+
+	i = 10;
+	do {
+		i = i + 1;
+		cout << i;
+	} while (i < 5); // Should only print 11
 }

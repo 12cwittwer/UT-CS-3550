@@ -635,6 +635,21 @@ unsigned char * InstructionsClass::SkipIfZeroStack()
         return addressToFillInLater;
 }
 
+unsigned char * InstructionsClass::SkipIfNotZeroStack()
+{
+        Encode(POP_EBX);
+        Encode(IMMEDIATE_TO_EAX); // load A register with 0
+        Encode(0);
+        Encode(CMP_EAX_EBX1);
+        Encode(CMP_EAX_EBX2);
+        Encode(JNE_FAR1); // If stack had zero, do a jump
+        Encode(JE_FAR2);
+        unsigned char * addressToFillInLater = GetAddress();
+        Encode(0); // the exact number of bytes to skip gets set later,
+                   // when we know it!  Call SetOffset() to do that.
+        return addressToFillInLater;
+}
+
 unsigned char *  InstructionsClass::Jump()
 {
         Encode(JUMP_ALWAYS_FAR);

@@ -305,7 +305,7 @@ void DoWhileStatementNode::Code(InstructionsClass &machineCode) {
     unsigned char * address1 = machineCode.GetAddress();
     mStatementNode->Code(machineCode);
     mExpressionNode->CodeEvaluate(machineCode);
-    unsigned char * InsertAddressToSkip = machineCode.SkipIfZeroStack();
+    unsigned char * InsertAddressToSkip = machineCode.SkipIfNotZeroStack();
     unsigned char * address2 = machineCode.GetAddress();
     machineCode.SetOffset(InsertAddressToSkip, (int)(address1 - address2));
 }

@@ -62,6 +62,9 @@ StatementNode * ParserClass::Statement() { // Add if and while statements here
     } else if (nextToken == REPEAT_TOKEN) {
         sn = RepeatStatement();
         return sn;
+    } else if (nextToken == DO_TOKEN) {
+        sn = DoWhileStatement();
+        return sn;
     } else {
         return NULL;
     }
@@ -130,6 +133,18 @@ WhileStatementNode * ParserClass::WhileStatement() {
     StatementNode *sn = Statement();
     WhileStatementNode *wsn = new WhileStatementNode(epn, sn);
     return wsn;
+}
+
+DoWhileStatementNode * ParserClass::DoWhileStatement() {
+    Match(DO_TOKEN);
+    StatementNode *sn = Statement();
+    Match(WHILE_TOKEN);
+    Match(LPAREN_TOKEN);
+    ExpressionNode *epn = Expression();
+    Match(RPAREN_TOKEN);
+    Match(SEMICOLON_TOKEN);
+    DoWhileStatementNode *dsn = new DoWhileStatementNode(epn, sn);
+    return dsn;
 }
 
 RepeatStatementNode * ParserClass::RepeatStatement() {

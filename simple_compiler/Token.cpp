@@ -18,6 +18,8 @@ TokenClass::TokenClass(TokenType type, const std::string& lexeme)
         mType = TokenType::OR_TOKEN;
     } else if (lexeme == "repeat") {
         mType = REPEAT_TOKEN;
+    } else if (lexeme == "do") {
+        mType = DO_TOKEN;
     }
 } 
 

@@ -284,6 +284,32 @@ void WhileStatementNode::Code(InstructionsClass &machineCode) {
     machineCode.SetOffset(InsertAddressToJump, (int)(address1 - address3));
 }
 
+DoWhileStatementNode::DoWhileStatementNode(ExpressionNode* epn, StatementNode* sn) 
+: mExpressionNode(epn), mStatementNode(sn) {
+    MSG("Constructing Do While Statement Node");
+}
+
+DoWhileStatementNode::~DoWhileStatementNode() {
+    MSG("Desctructing Do While Statement Node");
+    delete mExpressionNode;
+    delete mStatementNode;
+}
+
+void DoWhileStatementNode::Interpret() {
+    do {
+        mStatementNode->Interpret();
+    } while (mExpressionNode->Evaluate() != 0);
+}
+
+void DoWhileStatementNode::Code(InstructionsClass &machineCode) {
+    unsigned char * address1 = machineCode.GetAddress();
+    mStatementNode->Code(machineCode);
+    mExpressionNode->CodeEvaluate(machineCode);
+    unsigned char * InsertAddressToSkip = machineCode.SkipIfZeroStack();
+    unsigned char * address2 = machineCode.GetAddress();
+    machineCode.SetOffset(InsertAddressToSkip, (int)(address1 - address2));
+}
+
 
 RepeatStatementNode::RepeatStatementNode(ExpressionNode* epn, StatementNode* sn)
 : mExpressionNode(epn), mStatementNode(sn) {

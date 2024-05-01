@@ -3,4 +3,11 @@ void main()
 	int mod;
 	mod = (5 * 7) % (5 + 6);
 	cout << mod;
+
+	int i;
+	i = 0;
+	do {
+		i = i + 1;
+		cout << i;
+	} while (i < 6);
 }

@@ -22,6 +22,7 @@ class MinusEqualStatementNode;
 class CoutStatementNode;
 class IfStatementNode;
 class WhileStatementNode;
+class DoWhileStatementNode;
 class RepeatStatementNode;
 class ExpressionNode;
 class IntegerNode;
@@ -181,6 +182,18 @@ class WhileStatementNode : public StatementNode {
     public:
         WhileStatementNode(ExpressionNode* epn, StatementNode* sn);
         virtual ~WhileStatementNode();
+        void Interpret();
+        void Code(InstructionsClass &machineCode);
+
+    private:
+        ExpressionNode* mExpressionNode;
+        StatementNode* mStatementNode;
+};
+
+class DoWhileStatementNode : public StatementNode {
+    public:
+        DoWhileStatementNode(ExpressionNode* epn, StatementNode* sn);
+        virtual ~DoWhileStatementNode();
         void Interpret();
         void Code(InstructionsClass &machineCode);
 

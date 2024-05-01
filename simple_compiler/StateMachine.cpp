@@ -56,6 +56,7 @@ StateMachineClass::StateMachineClass()
     mLegalMoves[ASSIGNMENT_STATE][EQUAL_CHAR] = EQUAL_STATE;
     mLegalMoves[START_STATE][BANG_CHAR] = BANG_STATE;
     mLegalMoves[BANG_STATE][EQUAL_CHAR] = NOTEQUAL_STATE;
+    mLegalMoves[START_STATE][MOD_CHAR] = MOD_STATE;
 
     // And and or states
     mLegalMoves[START_STATE][AMPERSAND_CHAR] = AND_START;
@@ -97,6 +98,7 @@ StateMachineClass::StateMachineClass()
     mCorrespondingTokenType[MULTIPLY_STATE] = TIMES_TOKEN;
     mCorrespondingTokenType[EQUAL_STATE] = EQUAL_TOKEN;
     mCorrespondingTokenType[NOTEQUAL_STATE] = NOTEQUAL_TOKEN;
+    mCorrespondingTokenType[MOD_STATE] = MOD_TOKEN;
 
     //Special tokens
     mCorrespondingTokenType[MINUSEQUAL_STATE] = MINUSEQUAL_TOKEN;
@@ -156,6 +158,8 @@ MachineState StateMachineClass::UpdateState(char currentCharacter, TokenType &pr
         charType = AMPERSAND_CHAR;
     } else if (currentCharacter == '|') {
         charType = PIPE_CHAR;
+    } else if (currentCharacter == '%') {
+        charType = MOD_CHAR;
     }
     else {
         charType = BAD_CHAR;

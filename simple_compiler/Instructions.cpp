@@ -467,6 +467,15 @@ void InstructionsClass::PopPopDivPush()
 	Encode(PUSH_EAX);
 }
 
+void InstructionsClass::PopPopModPush() {
+	Encode(POP_EBX);
+	Encode(POP_EAX);
+	Encode(CDQ); // Necessary to clear the EDX before the divide.
+	Encode(DIV_EAX_EBX1); // Divide EAX by EBX. Result in EAX.
+	Encode(DIV_EAX_EBX2);
+	Encode(PUSH_EDX);
+}
+
 void InstructionsClass::PopPopAddPush()
 {
 	Encode(POP_EBX);

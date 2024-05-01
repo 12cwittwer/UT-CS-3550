@@ -1,14 +1,6 @@
 void main()
 {	
-	int sum;
-	sum = 9;
-	sum += 10 / 2;
-	cout << sum;
-	
-	int diff;
-	diff = 15;
-	while (diff > 5) {
-		cout << diff;
-		diff -= 3;
-	}
+	int mod;
+	mod = (5 * 7) % (5 + 6);
+	cout << mod;
 }

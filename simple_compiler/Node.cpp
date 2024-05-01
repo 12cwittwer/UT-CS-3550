@@ -454,6 +454,23 @@ void DivideNode::CodeEvaluate(InstructionsClass &machineCode)
 	machineCode.PopPopDivPush();
 }
 
+ModNode::ModNode(ExpressionNode* left, ExpressionNode* right)
+: BinaryOperatorNode(left, right) {
+    MSG("Constructing Mod Node");
+}
+
+int ModNode::Evaluate() const {
+    MSG("Evaluating Mod Node");
+    return mLeftExpressionNode->Evaluate() % mRightExpressionNode->Evaluate();
+}
+
+void ModNode::CodeEvaluate(InstructionsClass &machineCode)
+{
+	mLeftExpressionNode->CodeEvaluate(machineCode);
+	mRightExpressionNode->CodeEvaluate(machineCode);
+	machineCode.PopPopModPush();
+}
+
 OrNode::OrNode(ExpressionNode* left, ExpressionNode* right) 
 : BinaryOperatorNode(left, right) {
     MSG("Constructing OR Node");

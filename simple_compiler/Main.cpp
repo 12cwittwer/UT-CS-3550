@@ -15,7 +15,7 @@ int main()  {
 	// TestMachine();
 	// TestParser();
 	TestInterpreter();
-	CodeAndExecute("code.txt");
+	// CodeAndExecute("code.txt");
 
 	return 0;
 }

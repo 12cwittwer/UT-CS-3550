@@ -31,6 +31,7 @@ class PlusNode;
 class MinusNode;
 class TimesNode;
 class DivideNode;
+class ModNode;
 class OrNode;
 class AndNode;
 class LessNode;
@@ -274,6 +275,14 @@ class TimesNode : public BinaryOperatorNode {
 class DivideNode : public BinaryOperatorNode {
     public:
         DivideNode(ExpressionNode* left, ExpressionNode* right);
+        int Evaluate() const;
+        void CodeEvaluate(InstructionsClass &machineCode);
+    private:
+};
+
+class ModNode : public BinaryOperatorNode {
+    public:
+        ModNode(ExpressionNode* left, ExpressionNode* right);
         int Evaluate() const;
         void CodeEvaluate(InstructionsClass &machineCode);
     private:

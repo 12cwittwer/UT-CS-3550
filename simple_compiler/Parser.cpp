@@ -243,6 +243,10 @@ ExpressionNode * ParserClass::PlusMinus()
 			Match(tt);
             current = new MinusNode(current, TimesDivide());
 		}
+        else if (tt == MOD_TOKEN) {
+            Match(tt);
+            current = new ModNode(current, TimesDivide());
+        }
 		else
 		{
 			return current;

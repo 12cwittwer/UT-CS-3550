@@ -644,7 +644,7 @@ unsigned char * InstructionsClass::SkipIfNotZeroStack()
         Encode(CMP_EAX_EBX2);
         Encode(JE_FAR1); // If stack had zero, do a jump
         Encode(JE_FAR2);
-        Encode((unsigned char)1); // the exact number of bytes to skip gets set later,
+        Encode((unsigned char)2); // the exact number of bytes to skip gets set later,
                    // when we know it!  Call SetOffset() to do that.
 		Encode(JUMP_ALWAYS_FAR);
         unsigned char * addressToFillInLater = GetAddress();
